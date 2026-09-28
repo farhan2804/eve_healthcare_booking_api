@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.evehealthcare.eve_healthcare_booking_api.dto.LoginRequest;
+import com.evehealthcare.eve_healthcare_booking_api.dto.LoginResponse;
 import com.evehealthcare.eve_healthcare_booking_api.dto.SignupRequest;
 import com.evehealthcare.eve_healthcare_booking_api.dto.SignupResponse;
 import com.evehealthcare.eve_healthcare_booking_api.service.AuthService;
@@ -24,6 +26,11 @@ public class AuthController {
     @PostMapping("/signup")
     public SignupResponse signup(@RequestBody SignupRequest request) {
         return authService.signup(request);
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 
 }
