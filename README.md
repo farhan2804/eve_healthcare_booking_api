@@ -779,4 +779,4 @@ After starting the application, Swagger UI is available at:
 
 **Farhan Mahmood**
 
-Built for the **EVE Healthcare SDE Intern - Backend Engineering Assignment**.
+Built for the **EVE Healthcare SDE Intern - Backend Engineering Assignment**
