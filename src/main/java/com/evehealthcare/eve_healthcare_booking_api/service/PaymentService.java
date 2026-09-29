@@ -7,6 +7,9 @@ import com.evehealthcare.eve_healthcare_booking_api.entity.Payment;
 import com.evehealthcare.eve_healthcare_booking_api.entity.PaymentStatus;
 import com.evehealthcare.eve_healthcare_booking_api.repository.BookingRepository;
 import com.evehealthcare.eve_healthcare_booking_api.repository.PaymentRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,6 +20,8 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final BookingRepository bookingRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
 
     public PaymentService(
             PaymentRepository paymentRepository,
@@ -31,17 +36,34 @@ public class PaymentService {
             boolean success,
             String userEmail) {
 
+        log.info(
+                "Payment request received for booking: {}, user: {}, success: {}",
+                bookingId,
+                userEmail,
+                success);
+
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         // Check whether the authenticated user owns this booking
         if (!booking.getUser().getEmail().equals(userEmail)) {
+
+            log.warn(
+                    "Unauthorized payment attempt for booking: {} by user: {}",
+                    bookingId,
+                    userEmail);
+
             throw new RuntimeException(
                     "You are not authorized to access this booking");
         }
 
         // Prevent duplicate payments
         if (paymentRepository.findByBookingId(bookingId).isPresent()) {
+
+            log.warn(
+                    "Duplicate payment attempt for booking: {}",
+                    bookingId);
+
             throw new RuntimeException(
                     "Payment already exists for this booking");
         }
@@ -65,16 +87,34 @@ public class PaymentService {
 
         bookingRepository.save(booking);
 
-        return paymentRepository.save(payment);
+        Payment savedPayment = paymentRepository.save(payment);
+
+        log.info(
+                "Payment processed successfully for booking: {}, status: {}",
+                bookingId,
+                savedPayment.getStatus());
+
+        return savedPayment;
     }
 
     public Payment processWebhook(PaymentWebhookRequest request) {
+
+        log.info(
+                "Payment webhook received. Event: {}, Booking: {}, Status: {}",
+                request.getEventId(),
+                request.getBookingId(),
+                request.getStatus());
 
         // 1. Same webhook event was already processed
         Optional<Payment> existingEvent = paymentRepository.findByWebhookEventId(
                 request.getEventId());
 
         if (existingEvent.isPresent()) {
+
+            log.info(
+                    "Duplicate webhook event ignored: {}",
+                    request.getEventId());
+
             return existingEvent.get();
         }
 
@@ -92,6 +132,11 @@ public class PaymentService {
         // don't allow another event to change its final state
         if (payment != null
                 && payment.getWebhookEventId() != null) {
+
+            log.info(
+                    "Booking {} already has a processed webhook. Ignoring new event: {}",
+                    request.getBookingId(),
+                    request.getEventId());
 
             return payment;
         }
@@ -121,6 +166,14 @@ public class PaymentService {
 
         bookingRepository.save(booking);
 
-        return paymentRepository.save(payment);
+        Payment savedPayment = paymentRepository.save(payment);
+
+        log.info(
+                "Webhook processed successfully. Event: {}, Booking: {}, Status: {}",
+                request.getEventId(),
+                request.getBookingId(),
+                savedPayment.getStatus());
+
+        return savedPayment;
     }
 }
