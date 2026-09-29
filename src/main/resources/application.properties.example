@@ -1,6 +1,8 @@
 spring.datasource.url=jdbc:postgresql://localhost:5432/eve_healthcare_db
 spring.datasource.username=postgres
-spring.datasource.password=013280
+spring.datasource.password=YOUR_POSTGRES_PASSWORD
+
+jwt.secret=YOUR_JWT_SECRET
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true

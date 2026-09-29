@@ -3,11 +3,15 @@ package com.evehealthcare.eve_healthcare_booking_api.util;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
-    private final String secretKey = "eve-healthcare-booking-api-secret-key-2026";
+    @Value("${jwt.secret}")
+    private String secretKey;
+
     private final long expiration = 86400000;
 
     public String generateToken(String email) {
