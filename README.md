@@ -21,19 +21,19 @@ The application provides REST APIs for:
 
 ## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Java 21 | Backend programming language |
-| Spring Boot 4.1.1 | Backend framework |
-| Spring Web MVC | REST APIs |
-| Spring Data JPA / Hibernate | Persistence |
-| Spring Security | Authentication and authorization |
-| JWT | Stateless authentication |
-| PostgreSQL | Relational database |
-| Maven | Build and dependency management |
-| Jakarta Bean Validation | Request validation |
-| JUnit | Automated testing |
-| Mockito | Unit-test mocking |
+| Technology                  | Purpose                          |
+| --------------------------- | -------------------------------- |
+| Java 21                     | Backend programming language     |
+| Spring Boot 4.1.1           | Backend framework                |
+| Spring Web MVC              | REST APIs                        |
+| Spring Data JPA / Hibernate | Persistence                      |
+| Spring Security             | Authentication and authorization |
+| JWT                         | Stateless authentication         |
+| PostgreSQL                  | Relational database              |
+| Maven                       | Build and dependency management  |
+| Jakarta Bean Validation     | Request validation               |
+| JUnit                       | Automated testing                |
+| Mockito                     | Unit-test mocking                |
 
 ## Architecture
 
@@ -275,10 +275,10 @@ Authorization: Bearer <JWT_TOKEN>
 
 ### Authentication
 
-| Method | Endpoint | Authentication |
-|---|---|---|
-| POST | `/api/auth/signup` | Public |
-| POST | `/api/auth/login` | Public |
+| Method | Endpoint           | Authentication |
+| ------ | ------------------ | -------------- |
+| POST   | `/api/auth/signup` | Public         |
+| POST   | `/api/auth/login`  | Public         |
 
 ### Diagnostic Centres
 
@@ -760,6 +760,20 @@ The core backend requirements for the assignment have been implemented, includin
 - [x] Authorization checks implemented
 - [x] Error handling implemented
 - [x] Tests passing with `mvn clean test`
+
+## Bonus Engineering Features
+
+The following additional engineering features were implemented:
+
+- **Swagger/OpenAPI** — Interactive API documentation and endpoint testing through Swagger UI.
+- **Structured Logging** — Added structured INFO/WARN logs for authentication, bookings, centre-test operations, payments, and webhook processing.
+- **Integration Tests** — Added API-level integration tests covering successful webhooks, webhook idempotency, and invalid booking handling.
+
+### Swagger UI
+
+After starting the application, Swagger UI is available at:
+
+`http://localhost:8080/swagger-ui/index.html`
 
 ## Author
 
