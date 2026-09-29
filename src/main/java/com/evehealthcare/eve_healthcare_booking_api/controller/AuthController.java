@@ -11,6 +11,8 @@ import com.evehealthcare.eve_healthcare_booking_api.dto.SignupRequest;
 import com.evehealthcare.eve_healthcare_booking_api.dto.SignupResponse;
 import com.evehealthcare.eve_healthcare_booking_api.service.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 
@@ -24,12 +26,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public SignupResponse signup(@RequestBody SignupRequest request) {
+    public SignupResponse signup(@Valid @RequestBody SignupRequest request) {
         return authService.signup(request);
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 

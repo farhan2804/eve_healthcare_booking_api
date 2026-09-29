@@ -8,6 +8,7 @@ import com.evehealthcare.eve_healthcare_booking_api.service.PaymentService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -21,10 +22,14 @@ public class PaymentController {
 
     @PostMapping
     public PaymentResponse processPayment(
-            @RequestParam Long bookingId,
-            @RequestParam boolean success) {
+        @RequestParam Long bookingId,
+        @RequestParam boolean success,
+        Authentication authentication) {
 
-        Payment payment = paymentService.processPayment(bookingId, success);
+        Payment payment = paymentService.processPayment(
+        bookingId,
+        success,
+        authentication.getName());
 
         PaymentResponse response = new PaymentResponse();
 
